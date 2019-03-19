@@ -1,14 +1,15 @@
 using PyPlot
+pygui(false)
 
 m = 1
-ω = 8
+ω = 1
 
 x0 = 1
 p0 = 1
 
-Δt = .01
-t = 2
-steps = t / Δt
+Δt = .1
+t_end = 10
+steps = t_end / Δt
 
 x = []
 p = []
@@ -26,8 +27,11 @@ end
 
 figure(figsize=(6, 5))
 clf()
-suptitle("Harmonischer Oszillator")
-t = [Δt:Δt:t;]
+suptitle("Harmonischer Oszillator Euler")
+t = [Δt:Δt:t_end;]
+
+k = ω^2*m
+E = @. 1/2*k*x^2 + p^2/2m
 
 subplot(221)
 plot(t, x)
@@ -44,5 +48,10 @@ plot(x, p, "C2")
 xlabel(L"x(t)")
 ylabel(L"p(t)")
 
-tight_layout()
+subplot(224)
+plot(t, E, "C3")
+xlabel(L"x(t)")
+ylabel(L"E(t)")
+
+tight_layout(rect=[0, 0, 1, .95])
 gcf()
