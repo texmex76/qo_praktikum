@@ -27,41 +27,41 @@ for i = 1:pts
     V[i,i] = pot(pos_basis[i])
 end
 
-# # Momentum operator
-# for i = 1:pts
-#     if i < pts
-#         p_sqr[i,i] = -2 / step^2
-#         p_sqr[i+1,i] = 1 / step^2
-#         p_sqr[i,i+1] = 1 / step^2
-#     else
-#         p_sqr[i,i] = -2 / step^2
-#     end
-# end
-
-# Momentum operator more steps
+# Momentum operator
 for i = 1:pts
-    if i < pts-2
-        p_sqr[i,i] = -49/18 / step^2
-        p_sqr[i+1,i] = 3/2 / step^2
-        p_sqr[i,i+1] = 3/2 / step^2
-        p_sqr[i+2,i] = -3/2 / step^2
-        p_sqr[i,i+2] = -3/2 / step^2
-        p_sqr[i+3,i] = 1/90 / step^2
-        p_sqr[i,i+3] = 1/90 / step^2
-    elseif i < pts-1
-        p_sqr[i,i] = -49/18 / step^2
-        p_sqr[i+1,i] = 3/2 / step^2
-        p_sqr[i,i+1] = 3/2 / step^2
-        p_sqr[i+2,i] = -3/2 / step^2
-        p_sqr[i,i+2] = -3/2 / step^2
-    elseif i < pts
-        p_sqr[i,i] = -49/18 / step^2
-        p_sqr[i+1,i] = 3/2 / step^2
-        p_sqr[i,i+1] = 3/2 / step^2
+    if i < pts
+        p_sqr[i,i] = -2 / step^2
+        p_sqr[i+1,i] = 1 / step^2
+        p_sqr[i,i+1] = 1 / step^2
     else
-        p_sqr[i,i] = -49/18 / step^2
+        p_sqr[i,i] = -2 / step^2
     end
 end
+
+# # Momentum operator more steps
+# for i = 1:pts
+#     if i < pts-2
+#         p_sqr[i,i] = -49/18 / step^2
+#         p_sqr[i+1,i] = 3/2 / step^2
+#         p_sqr[i,i+1] = 3/2 / step^2
+#         p_sqr[i+2,i] = -3/2 / step^2
+#         p_sqr[i,i+2] = -3/2 / step^2
+#         p_sqr[i+3,i] = 1/90 / step^2
+#         p_sqr[i,i+3] = 1/90 / step^2
+#     elseif i < pts-1
+#         p_sqr[i,i] = -49/18 / step^2
+#         p_sqr[i+1,i] = 3/2 / step^2
+#         p_sqr[i,i+1] = 3/2 / step^2
+#         p_sqr[i+2,i] = -3/2 / step^2
+#         p_sqr[i,i+2] = -3/2 / step^2
+#     elseif i < pts
+#         p_sqr[i,i] = -49/18 / step^2
+#         p_sqr[i+1,i] = 3/2 / step^2
+#         p_sqr[i,i+1] = 3/2 / step^2
+#     else
+#         p_sqr[i,i] = -49/18 / step^2
+#     end
+# end
 
 H_kin = -p_sqr/2m
 H_kin = H_kin
@@ -74,7 +74,7 @@ println(eigenvalues)
 println("")
 
 clf()
-n = 1
+n = 3
 plot(pos_basis, eigenvectors[:,n])
 suptitle("Wavefunction for n = " *@sprintf("%.0f", n))
 gcf()
