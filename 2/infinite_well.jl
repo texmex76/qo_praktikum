@@ -2,7 +2,7 @@ using LinearAlgebra
 using PyPlot
 using PyCall
 using Printf
-pygui(false)
+pygui(true)
 
 L = π
 
