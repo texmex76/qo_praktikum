@@ -32,8 +32,7 @@ for i = 1:pts
     V[i,i] = pot(pos_basis[i])
 end
 
-
-# Momentum operator more steps
+# Momentum operator
 for i = 1:pts
     if i < pts-2
         p_sqr[i,i] = -49/18 / step^2
@@ -60,20 +59,26 @@ end
 
 # Hamilton operators
 H_kin = -p_sqr/2m / (π^2 / L^2)
-H_kin = H_kin
 H = H_kin + V
 
 eigenvalues, eigenvectors = eigen(H)
-
-
 ψ0 = eigenvectors[:,1]
+
+function propagate(H_kin, V, t, Δt)
+    exp_left = exp(-im*H_kin*Δt/2)
+    exp_right = exp(im*H_kin*Δt/2)
+    M = ceil(t / Δt)
+    M_product = (exp(-im*V*Δt) * exp(-im*H_kin*Δt))^M
+    return exp_left * M_product * exp_right
+end
 
 ψt = []
 t_start = 0
 t_end = 3
-tpoints = [t_start:0.1:t_end;]
-for i in tpoints
-    push!(ψt, exp(-im*H*i) * ψ0)
+Δt = 0.1
+t_points = [t_start:Δt:t_end;]
+for i in t_points
+    push!(ψt, propagate(H_kin, V, i, Δt) * ψ0)
 end
 
 fig = figure(figsize=(6, 4))
