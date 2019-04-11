@@ -18,7 +18,7 @@ V = zeros(pts, pts)
 p_sqr = zeros(pts, pts)
 
 V0 = 10000
-m = .1999 / sqrt(Δx)
+m = .2
 
 # Function for evaluating potential
 function pot(x)
@@ -68,9 +68,7 @@ eigenvalues, eigenvectors = eigen(H)
 ψ0_2 = eigenvectors[:,2]
 ψ0 = (ψ0_1 + ψ0_2) / sqrt(2)
 
-# p_arr = filter(x -> x!=0, [-π/Δx:(2*π/(2*L)):π/Δx;])
 p_arr = [-π/Δx:(2*π/(2*L)):π/Δx-1;]
-# p_arr = [-π/Δx+1:(2*π/(2*L)):π/Δx;]
 
 ψt = []
 t_start = 0
@@ -109,6 +107,7 @@ clf()
 for i in ψt
     plot(pos_basis, i)
 end
-suptitle("Time evolution from $(t_start) to $(t_end)")
+suptitle("Approx Time evolution from $(t_start) to $(t_end)")
 
 gcf()
+# savefig("infinite_well_approx.svg")
