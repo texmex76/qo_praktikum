@@ -90,12 +90,52 @@ t_points = [t_start:t_step:t_end;]
 # gcf()
 # # savefig("infinite_well_exact.svg")
 
-f(u,p,t) = -im*H*u*ψ0
-u0= ψ0
-tspan = (0.0,1.0)
+f(u,p,t) = -im*H*u
+tspan = (0.0,3.0)
+
+u0 = complex(ψ0)
 prob = ODEProblem(f,u0,tspan)
-sol = solve(prob,Tsit5(),reltol=1e-8,abstol=1e-8)
-using Plots
-plot(sol,linewidth=5,title="Solution to the linear ODE with a thick line",
-     xaxis="Time (t)",yaxis="u(t) (in μm)",label="My Thick Line!") # legend=false
-plot!(sol.t, t->0.5*exp(1.01t),lw=3,ls=:dash,label="True Solution!")
+ψt = solve(prob,Tsit5(),reltol=1e-8,abstol=1e-8,saveat=0.1)
+
+u0_1 = complex(ψ0_1)
+prob = ODEProblem(f,u0_1,tspan)
+ψ_1t = solve(prob,Tsit5(),reltol=1e-8,abstol=1e-8,saveat=0.1)
+
+u0_1 = complex(ψ0_2)
+prob = ODEProblem(f,u0_1,tspan)
+ψ_2t = solve(prob,Tsit5(),reltol=1e-8,abstol=1e-8,saveat=0.1)
+
+t = 30
+figure(figsize=(6, 5))
+clf()
+suptitle("Approx Time evolution at " * L"t=" * "$(t)/$(size(ψt)[2])")
+subplots_adjust(top=0.85)
+
+subplot(221)
+plot(pos_basis, normalize(abs2.(ψt[t])))
+xlabel(L"x")
+ylabel(L"|\psi(x,t)|^2")
+title(L"\psi_t")
+
+subplot(222)
+plot(pos_basis, normalize(abs2.((ψ_1t[t] + ψ_2t[t]) / 2)))
+xlabel(L"x")
+ylabel(L"|\psi(x,t)|^2")
+title(L"(\psi_1+\psi_2)/2")
+
+subplot(223)
+plot(pos_basis, normalize(abs2.(ψ_1t[t])))
+xlabel(L"x")
+ylabel(L"|\psi(x,t)|^2")
+title(L"\psi_1")
+
+subplot(224)
+plot(pos_basis, normalize(abs2.(ψ_2t[t])))
+xlabel(L"x")
+ylabel(L"|\psi(x,t)|^2")
+title(L"\psi_2")
+
+tight_layout(rect=[0, 0, 1, .95])
+gcf()
+
+# savefig("infinite_well_approx.svg")

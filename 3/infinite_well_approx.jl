@@ -70,12 +70,6 @@ eigenvalues, eigenvectors = eigen(H)
 
 p_arr = [-π/Δx:(2*π/(2*L)):π/Δx-1;]
 
-ψt = []
-t_start = 0
-t_end = 1
-t_step = 0.05
-t_points = [t_start:t_step:t_end;]
-
 Δt = 0.001
 exp_p_left = @. exp(-im * p_arr^2 * Δt / (2 * m * 2))
 exp_p_right = @. exp(im * p_arr^2 * Δt / (2 * m * 2))
@@ -96,18 +90,60 @@ function propagate(t, ψ)
     return ifft(ifftshift(temp)) # now in ps
 end
 
+t_start = 0
+t_end = 3
+t_step = 0.05
+t_points = [t_start:t_step:t_end;]
+
+ψt = []
 push!(ψt, ψ0)
 for t in t_points
     push!(ψt, propagate(t, ψt[end]))
 end
 
-
-fig = figure(figsize=(6, 4))
-clf()
-for i in ψt
-    plot(pos_basis, i)
+ψ_1t = []
+push!(ψ_1t, ψ0_1)
+for t in t_points
+    push!(ψ_1t, propagate(t, ψ_1t[end]))
 end
-suptitle("Approx Time evolution from $(t_start) to $(t_end)")
 
+ψ_2t = []
+push!(ψ_2t, ψ0_2)
+for t in t_points
+    push!(ψ_2t, propagate(t, ψ_2t[end]))
+end
+
+t = 60
+figure(figsize=(6, 5))
+clf()
+suptitle("Approx Time evolution at " * L"t=" * "$(t)/$(size(ψt)[1])")
+subplots_adjust(top=0.85)
+
+subplot(221)
+plot(pos_basis, normalize(abs2.(ψt[t])))
+xlabel(L"x")
+ylabel(L"|\psi(x,t)|^2")
+title(L"\psi_t")
+
+subplot(222)
+plot(pos_basis, normalize(abs2.((ψ_1t[t] + ψ_2t[t]) / 2)))
+xlabel(L"x")
+ylabel(L"|\psi(x,t)|^2")
+title(L"(\psi_1+\psi_2)/2")
+
+subplot(223)
+plot(pos_basis, normalize(abs2.(ψ_1t[t])))
+xlabel(L"x")
+ylabel(L"|\psi(x,t)|^2")
+title(L"\psi_1")
+
+subplot(224)
+plot(pos_basis, normalize(abs2.(ψ_2t[t])))
+xlabel(L"x")
+ylabel(L"|\psi(x,t)|^2")
+title(L"\psi_2")
+
+tight_layout(rect=[0, 0, 1, .95])
 gcf()
+
 # savefig("infinite_well_approx.svg")

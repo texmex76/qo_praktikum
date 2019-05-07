@@ -69,22 +69,60 @@ eigenvalues, eigenvectors = eigen(H)
 ψ0_2 = eigenvectors[:,2]
 ψ0 = (ψ0_1 + ψ0_2) / sqrt(2)
 
-ψt = []
+function propagate(t, ψ)
+    temp = exp(-im*H*t) * ψ
+    return temp
+end
+
 t_start = 0
-t_end = 1
+t_end = 3
 t_step = 0.05
 t_points = [t_start:t_step:t_end;]
 
-for i in t_points
-    push!(ψt, exp(-im*H*i) * ψ0)
+ψt = []
+for t in t_points
+    push!(ψt, propagate(t, ψ0))
 end
 
-fig = figure(figsize=(6, 4))
+for t in t_points
+    push!(ψ_1t, propagate(t, ψ0_1))
+end
+
+for t in t_points
+    push!(ψ_2t, propagate(t, ψ0_2))
+end
+
+t = 60
+figure(figsize=(6, 5))
 clf()
-for i in ψt
-    plot(pos_basis, i)
-end
-suptitle("Exact Time evolution from $(t_start) to $(t_end)")
+suptitle("Exact Time evolution at " * L"t=" * "$(t)/$(size(ψt)[1])")
+subplots_adjust(top=0.85)
 
+subplot(221)
+plot(pos_basis, normalize(abs2.(ψt[t])))
+xlabel(L"x")
+ylabel(L"|\psi(x,t)|^2")
+title(L"\psi_t")
+
+subplot(222)
+plot(pos_basis, normalize(abs2.((ψ_1t[t] + ψ_2t[t]) / 2)))
+xlabel(L"x")
+ylabel(L"|\psi(x,t)|^2")
+title(L"(\psi_1+\psi_2)/2")
+
+subplot(223)
+plot(pos_basis, normalize(abs2.(ψ_1t[t])))
+xlabel(L"x")
+ylabel(L"|\psi(x,t)|^2")
+title(L"\psi_1")
+
+subplot(224)
+plot(pos_basis, normalize(abs2.(ψ_2t[t])))
+xlabel(L"x")
+ylabel(L"|\psi(x,t)|^2")
+title(L"\psi_2")
+
+tight_layout(rect=[0, 0, 1, .95])
 gcf()
-# savefig("infinite_well_exact.svg")
+
+# savefig("infinite_well_approx.svg")
