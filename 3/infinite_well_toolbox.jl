@@ -59,7 +59,7 @@ ylabel(L"| \Psi(t) |^2")
 
 for i=1:length(T)
     ψ = ψt[i]
-    n = real.(ψ.data)
+    n = abs2.(real.(ψ.data))
     plot(x_points, n)
 end
 gcf()
