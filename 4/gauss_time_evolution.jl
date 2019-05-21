@@ -2,7 +2,7 @@ using QuantumOptics
 using LinearAlgebra
 using PyPlot
 using PyCall
-pygui(true)
+pygui(false)
 
 xmin = -10
 xmax = 10
