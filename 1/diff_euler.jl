@@ -20,8 +20,10 @@ for i in 1:steps-1
     p_last = p[size(p)[1]]
     x_last = x[size(x)[1]]
     push!(x, x_last + p_last / m * Δt)
-    p_last = p[size(p)[1]]
-    x_last = x[size(x)[1]]
+    # Uncommenting those two lines will make the solution much
+    # more accurate, however the energy will start oscillating
+    # p_last = p[size(p)[1]]
+    # x_last = x[size(x)[1]]
     push!(p, p_last -m * ω^2 * x_last * Δt)
 end
 
