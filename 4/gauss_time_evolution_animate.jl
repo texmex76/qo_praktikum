@@ -14,7 +14,7 @@ b_momentum = MomentumBasis(b_position)
 xpoints = samplepoints(b_position)
 
 x0 = .5
-p0 = 0.4
+p0 = 2
 sigma = 0.3
 psi0 = gaussianstate(b_position, x0, p0, sigma)
 

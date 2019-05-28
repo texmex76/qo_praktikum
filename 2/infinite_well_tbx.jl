@@ -1,16 +1,16 @@
 using QuantumOptics
 using PyPlot
 using PyCall
-pygui(false)
+pygui(true)
 
 # Parameters
 L = π
 Npoints = 64
 V0 = 1000
-m = .5
 
 b_position = PositionBasis(-L, L, Npoints)
 step = 2 * L / Npoints
+m = .1999 / sqrt(step)
 
 p = momentum(b_position)
 

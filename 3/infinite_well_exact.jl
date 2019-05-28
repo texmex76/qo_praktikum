@@ -84,10 +84,12 @@ for t in t_points
     push!(ψt, propagate(t, ψ0))
 end
 
+ψ_1t = []
 for t in t_points
     push!(ψ_1t, propagate(t, ψ0_1))
 end
 
+ψ_2t = []
 for t in t_points
     push!(ψ_2t, propagate(t, ψ0_2))
 end
@@ -105,7 +107,7 @@ ylabel(L"|\psi(x,t)|^2")
 title(L"\psi_t")
 
 subplot(222)
-plot(pos_basis, normalize(abs2.((ψ_1t[t] + ψ_2t[t]) / 2)))
+plot(pos_basis, normalize(abs2.((ψ_1t[t] + ψ_2t[t]) / sqrt(2))))
 xlabel(L"x")
 ylabel(L"|\psi(x,t)|^2")
 title(L"(\psi_1+\psi_2)/2")

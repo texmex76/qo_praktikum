@@ -6,7 +6,7 @@ pygui(true)
 
 L = π
 
-Npoints = 32
+Npoints = 64
 basis = range(-L, stop = L, length = Npoints)
 pos_basis = collect(basis)
 step = 2 * L / Npoints
@@ -16,7 +16,7 @@ V = zeros(pts, pts)
 p_sqr = zeros(pts, pts)
 
 V0 = 10000
-m = .1999 / sqrt(step)
+m = .4
 
 # Function for evaluating potential
 function pot(x)
